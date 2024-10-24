@@ -1,5 +1,5 @@
 import React from "react";
-import { Canvas, Circle, Group } from "@shopify/react-native-skia";
+import { Canvas } from "@shopify/react-native-skia";
 import { useWindowDimensions } from "react-native";
 
 const App = () => {
