@@ -12,6 +12,12 @@ const App = () => {
     require("./assets/sprites/yellowbird-midflap.png")
   );
 
+  const pipeBottom = useImage(
+    require("./assets/sprites/pipe-green-bottom.png")
+  );
+
+  const pipeTop = useImage(require("./assets/sprites/pipe-green-top.png"));
+
   return (
     <Canvas style={{ width, height }}>
       <Image
@@ -20,12 +26,29 @@ const App = () => {
         height={height}
         fit={"cover"}
       />
+
+      <Image
+        image={pipeBottom}
+        x={width / 2}
+        y={height - 320}
+        width={104}
+        height={640}
+      />
+
+      <Image
+        image={pipeTop}
+        x={width / 2 - 60}
+        y={-320}
+        width={104}
+        height={640}
+      />
+
       <Image
         image={birdImage}
-        x={width / 2}
+        x={width / 4}
         y={height / 2}
-        width={34}
-        height={24}
+        width={68}
+        height={48}
       />
     </Canvas>
   );
