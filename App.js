@@ -9,6 +9,7 @@ import {
   withRepeat,
   useFrameCallback,
 } from "react-native-reanimated";
+import { GestureHandlerRootView, GestureDetector } from "react-native-gesture-handler";
 
 const GRAVITY = 750;
 
@@ -52,14 +53,12 @@ const App = () => {
       true
     );
   }, []);
+  onPress={() => {
+    yVelocity.value = -350;
+  }}
 
   return (
-    <Pressable
-      onPress={() => {
-        console.log("Touched");
-        yVelocity.value = -350;
-      }}
-    >
+    <GestureHandlerRootView style={{flex: 1}}>
       <Canvas style={{ width, height }}>
         <Image
           image={backgroundImage}
@@ -95,7 +94,7 @@ const App = () => {
 
         <Image image={birdImage} x={width / 3} y={y} width={68} height={48} />
       </Canvas>
-    </Pressable>
+    </GestureHandlerRootView>
   );
 };
 export default App;
