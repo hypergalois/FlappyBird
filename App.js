@@ -9,7 +9,11 @@ import {
   withRepeat,
   useFrameCallback,
 } from "react-native-reanimated";
-import { GestureHandlerRootView, GestureDetector } from "react-native-gesture-handler";
+import {
+  GestureHandlerRootView,
+  GestureDetector,
+  Gesture,
+} from "react-native-gesture-handler";
 
 const GRAVITY = 750;
 
@@ -53,47 +57,50 @@ const App = () => {
       true
     );
   }, []);
-  onPress={() => {
+
+  const gesture = Gesture.Tap().onStart(() => {
     yVelocity.value = -350;
-  }}
+  });
 
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
-      <Canvas style={{ width, height }}>
-        <Image
-          image={backgroundImage}
-          width={width}
-          height={height}
-          fit={"cover"}
-        />
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <GestureDetector gesture={gesture}>
+        <Canvas style={{ width, height }}>
+          <Image
+            image={backgroundImage}
+            width={width}
+            height={height}
+            fit={"cover"}
+          />
 
-        <Image
-          image={pipeBottom}
-          x={x}
-          y={height - 320 + pipeOffset}
-          width={104}
-          height={640}
-        />
+          <Image
+            image={pipeBottom}
+            x={x}
+            y={height - 320 + pipeOffset}
+            width={104}
+            height={640}
+          />
 
-        <Image
-          image={pipeTop}
-          x={x}
-          y={pipeOffset - 320}
-          width={104}
-          height={640}
-        />
+          <Image
+            image={pipeTop}
+            x={x}
+            y={pipeOffset - 320}
+            width={104}
+            height={640}
+          />
 
-        <Image
-          image={baseImage}
-          x={0}
-          y={height - 112}
-          width={width}
-          height={132}
-          fit={"cover"}
-        />
+          <Image
+            image={baseImage}
+            x={0}
+            y={height - 112}
+            width={width}
+            height={132}
+            fit={"cover"}
+          />
 
-        <Image image={birdImage} x={width / 3} y={y} width={68} height={48} />
-      </Canvas>
+          <Image image={birdImage} x={width / 3} y={y} width={68} height={48} />
+        </Canvas>
+      </GestureDetector>
     </GestureHandlerRootView>
   );
 };
