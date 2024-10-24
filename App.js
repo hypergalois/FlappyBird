@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useWindowDimensions } from "react-native";
+import { Pressable, useWindowDimensions } from "react-native";
 import { Canvas, useImage, Image } from "@shopify/react-native-skia";
 import {
   useSharedValue,
@@ -7,7 +7,10 @@ import {
   Easing,
   withSequence,
   withRepeat,
+  useFrameCallback,
 } from "react-native-reanimated";
+
+const GRAVITY = 750;
 
 const App = () => {
   const { width, height } = useWindowDimensions();
@@ -30,6 +33,14 @@ const App = () => {
 
   const pipeOffset = 0;
   const x = useSharedValue(width - 50);
+  const y = useSharedValue(height / 2);
+  const yVelocity = useSharedValue(10);
+
+  useFrameCallback(({ timeSincePreviousFrame: dt }) => {
+    if (!dt) return;
+    y.value += (yVelocity.value * dt) / 1000;
+    yVelocity.value += (GRAVITY * dt) / 1000;
+  });
 
   useEffect(() => {
     x.value = withRepeat(
@@ -43,47 +54,48 @@ const App = () => {
   }, []);
 
   return (
-    <Canvas style={{ width, height }}>
-      <Image
-        image={backgroundImage}
-        width={width}
-        height={height}
-        fit={"cover"}
-      />
+    <Pressable
+      onPress={() => {
+        console.log("Touched");
+        yVelocity.value = -350;
+      }}
+    >
+      <Canvas style={{ width, height }}>
+        <Image
+          image={backgroundImage}
+          width={width}
+          height={height}
+          fit={"cover"}
+        />
 
-      <Image
-        image={pipeBottom}
-        x={x}
-        y={height - 320 + pipeOffset}
-        width={104}
-        height={640}
-      />
+        <Image
+          image={pipeBottom}
+          x={x}
+          y={height - 320 + pipeOffset}
+          width={104}
+          height={640}
+        />
 
-      <Image
-        image={pipeTop}
-        x={x}
-        y={pipeOffset - 320}
-        width={104}
-        height={640}
-      />
+        <Image
+          image={pipeTop}
+          x={x}
+          y={pipeOffset - 320}
+          width={104}
+          height={640}
+        />
 
-      <Image
-        image={baseImage}
-        x={0}
-        y={height - 112}
-        width={width}
-        height={132}
-        fit={"cover"}
-      />
+        <Image
+          image={baseImage}
+          x={0}
+          y={height - 112}
+          width={width}
+          height={132}
+          fit={"cover"}
+        />
 
-      <Image
-        image={birdImage}
-        x={width / 3}
-        y={height / 2}
-        width={68}
-        height={48}
-      />
-    </Canvas>
+        <Image image={birdImage} x={width / 3} y={y} width={68} height={48} />
+      </Canvas>
+    </Pressable>
   );
 };
 export default App;
