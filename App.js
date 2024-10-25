@@ -50,10 +50,14 @@ const App = () => {
         rotate: interpolate(
           yVelocity.value,
           [-VELOCITY, VELOCITY],
-          [0.5, -0.5]
+          [-0.5, 0.5]
         ),
       },
     ];
+  });
+
+  const originBird = useDerivedValue(() => {
+    return { x: width / 3 + 34, y: y.value + 24 };
   });
 
   useFrameCallback(({ timeSincePreviousFrame: dt }) => {
@@ -113,10 +117,7 @@ const App = () => {
             fit={"cover"}
           />
 
-          <Group
-            origin={}
-            transform={transformBird}
-          >
+          <Group origin={originBird} transform={transformBird}>
             <Image
               image={birdImage}
               x={width / 3}
