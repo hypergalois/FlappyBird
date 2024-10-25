@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Pressable, useWindowDimensions } from "react-native";
 import { Canvas, useImage, Image, Group } from "@shopify/react-native-skia";
 import {
@@ -12,6 +12,7 @@ import {
   interpolate,
   Extrapolation,
   useAnimatedReaction,
+  runOnJS,
 } from "react-native-reanimated";
 import {
   GestureHandlerRootView,
@@ -24,6 +25,7 @@ const VELOCITY = 350;
 
 const App = () => {
   const { width, height } = useWindowDimensions();
+  const [score, setScore] = useState(0);
 
   const backgroundImage = useImage(
     require("./assets/sprites/background-day.png")
@@ -73,7 +75,8 @@ const App = () => {
         currentValue < middle &&
         previousValue > middle
       ) {
-        console.log("Score");
+        // We need to run this in the js thread
+        runOnJS(setScore)((score) => score + 1);
       }
     }
   );
@@ -105,6 +108,9 @@ const App = () => {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <GestureDetector gesture={gesture}>
         <Canvas style={{ width, height }}>
+          {/* Start game */}
+
+          {/* Background */}
           <Image
             image={backgroundImage}
             width={width}
@@ -112,6 +118,7 @@ const App = () => {
             fit={"cover"}
           />
 
+          {/* Bottom pipe */}
           <Image
             image={pipeBottom}
             x={x}
@@ -120,6 +127,7 @@ const App = () => {
             height={640}
           />
 
+          {/* Top pipe */}
           <Image
             image={pipeTop}
             x={x}
@@ -128,6 +136,7 @@ const App = () => {
             height={640}
           />
 
+          {/* Floor */}
           <Image
             image={baseImage}
             x={0}
@@ -137,6 +146,7 @@ const App = () => {
             fit={"cover"}
           />
 
+          {/* Bird */}
           <Group origin={originBird} transform={transformBird}>
             <Image
               image={birdImage}
@@ -146,6 +156,10 @@ const App = () => {
               height={48}
             />
           </Group>
+
+          {/* Score */}
+
+          {/* Game over */}
         </Canvas>
       </GestureDetector>
     </GestureHandlerRootView>
