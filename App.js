@@ -67,12 +67,13 @@ const App = () => {
       return x.value;
     },
     (currentValue, previousValue = 0) => {
-      const middle = width / 3 + 34;
+      const middle = width / 3 - 34;
       if (
         currentValue !== previousValue &&
         currentValue < middle &&
         previousValue > middle
       ) {
+        console.log("Score");
       }
     }
   );
