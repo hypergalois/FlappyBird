@@ -99,7 +99,7 @@ const App = () => {
           />
 
           <Group
-            origin={{ x: width / 3, y: y.value }}
+            origin={{ x: width / 3 + 34, y: y.value + 24 }}
             transform={[{ rotate: 0.8 }]}
           >
             <Image
