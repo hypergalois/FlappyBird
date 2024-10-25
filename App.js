@@ -11,6 +11,7 @@ import {
   useDerivedValue,
   interpolate,
   Extrapolation,
+  useAnimatedReaction,
 } from "react-native-reanimated";
 import {
   GestureHandlerRootView,
@@ -45,27 +46,9 @@ const App = () => {
   const x = useSharedValue(width - 50);
   const y = useSharedValue(height / 2);
   const yVelocity = useSharedValue(10);
-  const transformBird = useDerivedValue(() => {
-    return [
-      {
-        rotate: interpolate(
-          yVelocity.value,
-          [-VELOCITY, VELOCITY],
-          [-0.5, 0.5],
-          Extrapolation.CLAMP
-        ),
-      },
-    ];
-  });
 
   const originBird = useDerivedValue(() => {
     return { x: width / 3 + 34, y: y.value + 24 };
-  });
-
-  useFrameCallback(({ timeSincePreviousFrame: dt }) => {
-    if (!dt) return;
-    y.value += (yVelocity.value * dt) / 1000;
-    yVelocity.value += (GRAVITY * dt) / 1000;
   });
 
   useEffect(() => {
@@ -79,8 +62,38 @@ const App = () => {
     );
   }, []);
 
+  useAnimatedReaction(
+    () => {
+      return x.value;
+    },
+    (currentValue, previousValue) => {
+      if (currentValue !== previousValue) {
+        console.log("x value changed", currentValue);
+      }
+    }
+  );
+
+  useFrameCallback(({ timeSincePreviousFrame: dt }) => {
+    if (!dt) return;
+    y.value += (yVelocity.value * dt) / 1000;
+    yVelocity.value += (GRAVITY * dt) / 1000;
+  });
+
   const gesture = Gesture.Tap().onStart(() => {
     yVelocity.value = -VELOCITY;
+  });
+
+  const transformBird = useDerivedValue(() => {
+    return [
+      {
+        rotate: interpolate(
+          yVelocity.value,
+          [-VELOCITY, VELOCITY],
+          [-0.5, 0.5],
+          Extrapolation.CLAMP
+        ),
+      },
+    ];
   });
 
   return (
