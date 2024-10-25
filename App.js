@@ -8,6 +8,8 @@ import {
   withSequence,
   withRepeat,
   useFrameCallback,
+  useDerivedValue,
+  interpolate,
 } from "react-native-reanimated";
 import {
   GestureHandlerRootView,
@@ -16,6 +18,7 @@ import {
 } from "react-native-gesture-handler";
 
 const GRAVITY = 750;
+const VELOCITY = 350;
 
 const App = () => {
   const { width, height } = useWindowDimensions();
@@ -37,9 +40,21 @@ const App = () => {
   const pipeTop = useImage(require("./assets/sprites/pipe-green-top.png"));
 
   const pipeOffset = 0;
+
   const x = useSharedValue(width - 50);
   const y = useSharedValue(height / 2);
   const yVelocity = useSharedValue(10);
+  const transformBird = useDerivedValue(() => {
+    return [
+      {
+        rotate: interpolate(
+          yVelocity.value,
+          [-VELOCITY, VELOCITY],
+          [0.5, -0.5]
+        ),
+      },
+    ];
+  });
 
   useFrameCallback(({ timeSincePreviousFrame: dt }) => {
     if (!dt) return;
@@ -59,7 +74,7 @@ const App = () => {
   }, []);
 
   const gesture = Gesture.Tap().onStart(() => {
-    yVelocity.value = -350;
+    yVelocity.value = -VELOCITY;
   });
 
   return (
@@ -99,8 +114,8 @@ const App = () => {
           />
 
           <Group
-            origin={{ x: width / 3 + 34, y: y.value + 24 }}
-            transform={[{ rotate: 0.8 }]}
+            origin={}
+            transform={transformBird}
           >
             <Image
               image={birdImage}
