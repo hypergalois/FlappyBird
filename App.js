@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Pressable, useWindowDimensions } from "react-native";
-import { Canvas, useImage, Image } from "@shopify/react-native-skia";
+import { Canvas, useImage, Image, Group } from "@shopify/react-native-skia";
 import {
   useSharedValue,
   withTiming,
@@ -98,7 +98,18 @@ const App = () => {
             fit={"cover"}
           />
 
-          <Image image={birdImage} x={width / 3} y={y} width={68} height={48} />
+          <Group
+            origin={{ x: width / 3, y: y.value }}
+            transform={[{ rotate: 0.8 }]}
+          >
+            <Image
+              image={birdImage}
+              x={width / 3}
+              y={y}
+              width={68}
+              height={48}
+            />
+          </Group>
         </Canvas>
       </GestureDetector>
     </GestureHandlerRootView>
