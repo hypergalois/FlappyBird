@@ -10,6 +10,7 @@ import {
   useFrameCallback,
   useDerivedValue,
   interpolate,
+  Extrapolation,
 } from "react-native-reanimated";
 import {
   GestureHandlerRootView,
@@ -50,7 +51,8 @@ const App = () => {
         rotate: interpolate(
           yVelocity.value,
           [-VELOCITY, VELOCITY],
-          [-0.5, 0.5]
+          [-0.5, 0.5],
+          Extrapolation.CLAMP
         ),
       },
     ];
