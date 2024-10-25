@@ -66,9 +66,13 @@ const App = () => {
     () => {
       return x.value;
     },
-    (currentValue, previousValue) => {
-      if (currentValue !== previousValue) {
-        console.log("x value changed", currentValue);
+    (currentValue, previousValue = 0) => {
+      const middle = width / 3 + 34;
+      if (
+        currentValue !== previousValue &&
+        currentValue < middle &&
+        previousValue > middle
+      ) {
       }
     }
   );
