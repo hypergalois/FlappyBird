@@ -25,8 +25,12 @@ const VELOCITY = 500;
 
 const App = () => {
   const { width, height } = useWindowDimensions();
-  // const [score, setScore] = useState(0);
-  const score = useSharedValue(0);
+  const [score, setScore] = useState(0);
+  // const score = useSharedValue(0);
+
+  useEffect(() => {
+    console.log("Score", score);
+  }, [score]);
 
   const [hasGameStarted, setHasGameStarted] = useState(false);
 
@@ -47,10 +51,6 @@ const App = () => {
   );
 
   const pipeTop = useImage(require("./assets/sprites/pipe-green-top.png"));
-
-  // const numberImages = Array.from({ length: 10 }, (_, i) =>
-  //   useImage(require(`./assets/sprites/${i}.png`))
-  // );
 
   const numberImagesRequires = {
     0: require("./assets/sprites/0.png"),
@@ -92,10 +92,14 @@ const App = () => {
 
   const startGame = () => {
     setHasGameStarted(true);
-    // setScore(0);
-    score.value = 0;
+    setScore(0);
+    // score.value = 0;
     y.value = height / 2;
     yVelocity.value = 10;
+  };
+
+  const incrementScore = () => {
+    setScore((prevScore) => prevScore + 1);
   };
 
   useAnimatedReaction(
@@ -109,10 +113,7 @@ const App = () => {
         currentValue < middle &&
         previousValue > middle
       ) {
-        // We need to run this in the js thread
-        // runOnJS(setScore)((score) => score + 1);
-        score.value += 1;
-        console.log("Score", score.value);
+        runOnJS(incrementScore)();
       }
     }
   );
@@ -139,6 +140,10 @@ const App = () => {
       },
     ];
   });
+
+  const getScoreDigits = () => {
+    return score.toString().split("").map(Number);
+  };
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -197,6 +202,24 @@ const App = () => {
             </Group>
           )}
 
+          {/* Score */}
+          {hasGameStarted && (
+            <Group
+              transform={[{ translateX: width / 2 - 48 }, { translateY: 72 }]}
+            >
+              {getScoreDigits().map((digit, index) => (
+                <Image
+                  key={index}
+                  image={numberImages[digit]}
+                  x={index * 48}
+                  y={0}
+                  width={48}
+                  height={72}
+                />
+              ))}
+            </Group>
+          )}
+
           {/* Start game */}
           {!hasGameStarted && (
             <Image
@@ -207,8 +230,6 @@ const App = () => {
               height={height * 0.8}
             />
           )}
-
-          {/* Score */}
 
           {/* Game over */}
         </Canvas>
