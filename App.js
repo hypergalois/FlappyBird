@@ -26,12 +26,15 @@ const VELOCITY = 350;
 const App = () => {
   const { width, height } = useWindowDimensions();
   const [score, setScore] = useState(0);
+  const [hasGameStarted, setHasGameStarted] = useState(false);
 
   const backgroundImage = useImage(
     require("./assets/sprites/background-day.png")
   );
 
   const baseImage = useImage(require("./assets/sprites/base.png"));
+
+  const startGameImage = useImage(require("./assets/sprites/message.png"));
 
   const birdImage = useImage(
     require("./assets/sprites/yellowbird-midflap.png")
@@ -62,7 +65,7 @@ const App = () => {
       -1,
       true
     );
-  }, []);
+  }, [hasGameStarted]);
 
   useAnimatedReaction(
     () => {
@@ -108,8 +111,6 @@ const App = () => {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <GestureDetector gesture={gesture}>
         <Canvas style={{ width, height }}>
-          {/* Start game */}
-
           {/* Background */}
           <Image
             image={backgroundImage}
@@ -118,23 +119,27 @@ const App = () => {
             fit={"cover"}
           />
 
-          {/* Bottom pipe */}
-          <Image
-            image={pipeBottom}
-            x={x}
-            y={height - 320 + pipeOffset}
-            width={104}
-            height={640}
-          />
+          {hasGameStarted && (
+            <>
+              {/* Bottom pipe */}
+              <Image
+                image={pipeBottom}
+                x={x}
+                y={height - 320 + pipeOffset}
+                width={104}
+                height={640}
+              />
 
-          {/* Top pipe */}
-          <Image
-            image={pipeTop}
-            x={x}
-            y={pipeOffset - 320}
-            width={104}
-            height={640}
-          />
+              {/* Top pipe */}
+              <Image
+                image={pipeTop}
+                x={x}
+                y={pipeOffset - 320}
+                width={104}
+                height={640}
+              />
+            </>
+          )}
 
           {/* Floor */}
           <Image
@@ -147,15 +152,28 @@ const App = () => {
           />
 
           {/* Bird */}
-          <Group origin={originBird} transform={transformBird}>
+          {hasGameStarted && (
+            <Group origin={originBird} transform={transformBird}>
+              <Image
+                image={birdImage}
+                x={width / 3}
+                y={y}
+                width={68}
+                height={48}
+              />
+            </Group>
+          )}
+
+          {/* Start game */}
+          {!hasGameStarted && (
             <Image
-              image={birdImage}
-              x={width / 3}
-              y={y}
-              width={68}
-              height={48}
+              image={startGameImage}
+              x={0}
+              y={width / 2}
+              width={200}
+              height={200}
             />
-          </Group>
+          )}
 
           {/* Score */}
 
