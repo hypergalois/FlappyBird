@@ -26,11 +26,16 @@ const VELOCITY = 500;
 const App = () => {
   const { width, height } = useWindowDimensions();
   const [score, setScore] = useState(0);
-  // const score = useSharedValue(0);
 
-  useEffect(() => {
-    console.log("Score", score);
-  }, [score]);
+  const getScoreDigits = () => {
+    return score.toString().split("").map(Number);
+  };
+
+  const digitWidth = 48;
+  const digitHeight = 72;
+  const scoreDigits = getScoreDigits();
+  const totalScoreWidth = scoreDigits.length * digitWidth;
+  const centerX = (width - totalScoreWidth) / 2;
 
   const [hasGameStarted, setHasGameStarted] = useState(false);
 
@@ -82,7 +87,7 @@ const App = () => {
   useEffect(() => {
     x.value = withRepeat(
       withSequence(
-        withTiming(-104, { duration: 3000, easing: Easing.linear }),
+        withTiming(-104, { duration: 2000, easing: Easing.linear }),
         withTiming(width, { duration: 0 })
       ),
       -1,
@@ -140,10 +145,6 @@ const App = () => {
       },
     ];
   });
-
-  const getScoreDigits = () => {
-    return score.toString().split("").map(Number);
-  };
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -204,17 +205,15 @@ const App = () => {
 
           {/* Score */}
           {hasGameStarted && (
-            <Group
-              transform={[{ translateX: width / 2 - 48 }, { translateY: 72 }]}
-            >
-              {getScoreDigits().map((digit, index) => (
+            <Group transform={[{ translateX: centerX }, { translateY: 72 }]}>
+              {scoreDigits.map((digit, index) => (
                 <Image
                   key={index}
                   image={numberImages[digit]}
-                  x={index * 48}
+                  x={index * digitWidth}
                   y={0}
-                  width={48}
-                  height={72}
+                  width={digitWidth}
+                  height={digitHeight}
                 />
               ))}
             </Group>
