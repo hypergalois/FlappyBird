@@ -46,6 +46,10 @@ const App = () => {
 
   const pipeTop = useImage(require("./assets/sprites/pipe-green-top.png"));
 
+  const numberImages = Array.from({ length: 10 }, (_, i) =>
+    useImage(require(`./assets/sprites/${i}.png`))
+  );
+
   const pipeOffset = 0;
 
   const x = useSharedValue(width - 50);
