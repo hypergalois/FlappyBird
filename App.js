@@ -20,12 +20,14 @@ import {
   Gesture,
 } from "react-native-gesture-handler";
 
-const GRAVITY = 750;
-const VELOCITY = 350;
+const GRAVITY = 1250;
+const VELOCITY = 500;
 
 const App = () => {
   const { width, height } = useWindowDimensions();
-  const [score, setScore] = useState(0);
+  // const [score, setScore] = useState(0);
+  const score = useSharedValue(0);
+
   const [hasGameStarted, setHasGameStarted] = useState(false);
 
   const backgroundImage = useImage(
@@ -46,8 +48,25 @@ const App = () => {
 
   const pipeTop = useImage(require("./assets/sprites/pipe-green-top.png"));
 
+  // const numberImages = Array.from({ length: 10 }, (_, i) =>
+  //   useImage(require(`./assets/sprites/${i}.png`))
+  // );
+
+  const numberImagesRequires = {
+    0: require("./assets/sprites/0.png"),
+    1: require("./assets/sprites/1.png"),
+    2: require("./assets/sprites/2.png"),
+    3: require("./assets/sprites/3.png"),
+    4: require("./assets/sprites/4.png"),
+    5: require("./assets/sprites/5.png"),
+    6: require("./assets/sprites/6.png"),
+    7: require("./assets/sprites/7.png"),
+    8: require("./assets/sprites/8.png"),
+    9: require("./assets/sprites/9.png"),
+  };
+
   const numberImages = Array.from({ length: 10 }, (_, i) =>
-    useImage(require(`./assets/sprites/${i}.png`))
+    useImage(numberImagesRequires[i])
   );
 
   const pipeOffset = 0;
@@ -73,7 +92,8 @@ const App = () => {
 
   const startGame = () => {
     setHasGameStarted(true);
-    setScore(0);
+    // setScore(0);
+    score.value = 0;
     y.value = height / 2;
     yVelocity.value = 10;
   };
@@ -90,7 +110,9 @@ const App = () => {
         previousValue > middle
       ) {
         // We need to run this in the js thread
-        runOnJS(setScore)((score) => score + 1);
+        // runOnJS(setScore)((score) => score + 1);
+        score.value += 1;
+        console.log("Score", score.value);
       }
     }
   );
