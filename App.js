@@ -67,6 +67,13 @@ const App = () => {
     );
   }, [hasGameStarted]);
 
+  const startGame = () => {
+    setHasGameStarted(true);
+    setScore(0);
+    y.value = height / 2;
+    yVelocity.value = 10;
+  };
+
   useAnimatedReaction(
     () => {
       return x.value;
@@ -180,18 +187,20 @@ const App = () => {
           {/* Game over */}
         </Canvas>
       </GestureDetector>
-      <Pressable
-        onPress={startGame}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      />
+      {!hasGameStarted && (
+        <Pressable
+          onPress={startGame}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        />
+      )}
     </GestureHandlerRootView>
   );
 };
