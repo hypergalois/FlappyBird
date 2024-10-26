@@ -168,10 +168,10 @@ const App = () => {
           {!hasGameStarted && (
             <Image
               image={startGameImage}
-              x={0}
-              y={width / 2}
-              width={200}
-              height={200}
+              x={width / 10}
+              y={height / 10}
+              width={width * 0.8}
+              height={height * 0.8}
             />
           )}
 
