@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Pressable, useWindowDimensions } from "react-native";
-import { Canvas, useImage, Image, Group } from "@shopify/react-native-skia";
+import {
+  Canvas,
+  useImage,
+  Image,
+  Group,
+  Circle,
+} from "@shopify/react-native-skia";
 import {
   useSharedValue,
   withTiming,
@@ -82,6 +88,14 @@ const App = () => {
 
   const originBird = useDerivedValue(() => {
     return { x: width / 3 + 34, y: y.value + 24 };
+  });
+
+  const birdCenterX = useDerivedValue(() => {
+    return width / 3 + 34;
+  });
+
+  const birdCenterY = useDerivedValue(() => {
+    return y.value + 24;
   });
 
   useEffect(() => {
@@ -192,15 +206,18 @@ const App = () => {
 
           {/* Bird */}
           {hasGameStarted && (
-            <Group origin={originBird} transform={transformBird}>
-              <Image
-                image={birdImage}
-                x={width / 3}
-                y={y}
-                width={68}
-                height={48}
-              />
-            </Group>
+            <>
+              <Group origin={originBird} transform={transformBird}>
+                <Image
+                  image={birdImage}
+                  x={width / 3}
+                  y={y}
+                  width={68}
+                  height={48}
+                />
+              </Group>
+              <Circle cy={birdCenter.value.y} cx={birdCenter.value.x} r={5} />
+            </>
           )}
 
           {/* Score */}
