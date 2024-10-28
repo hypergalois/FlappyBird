@@ -6,6 +6,7 @@ import {
   Image,
   Group,
   Circle,
+  Rect,
 } from "@shopify/react-native-skia";
 import {
   useSharedValue,
@@ -42,6 +43,9 @@ const App = () => {
   const scoreDigits = getScoreDigits();
   const totalScoreWidth = scoreDigits.length * digitWidth;
   const centerX = (width - totalScoreWidth) / 2;
+
+  const pipeWidth = 104;
+  const pipeHeight = 640;
 
   const [hasGameStarted, setHasGameStarted] = useState(false);
 
@@ -179,8 +183,8 @@ const App = () => {
                 image={pipeBottom}
                 x={x}
                 y={height - 320 + pipeOffset}
-                width={104}
-                height={640}
+                width={pipeWidth}
+                height={pipeHeight}
               />
 
               {/* Top pipe */}
@@ -188,9 +192,11 @@ const App = () => {
                 image={pipeTop}
                 x={x}
                 y={pipeOffset - 320}
-                width={104}
-                height={640}
+                width={pipeWidth}
+                height={pipeHeight}
               />
+
+              <Rect x={0} y={0} width={256} height={256} color={"red"} />
             </>
           )}
 
@@ -216,7 +222,7 @@ const App = () => {
                   height={48}
                 />
               </Group>
-              <Circle cy={birdCenter.value.y} cx={birdCenter.value.x} r={5} />
+              <Circle cy={birdCenterY} cx={birdCenterX} r={30} />
             </>
           )}
 
