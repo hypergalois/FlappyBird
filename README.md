@@ -2,10 +2,16 @@
 
 Este proyecto es una recreación del popular juego **Flappy Bird** utilizando **React Native**, **React Native Skia** y **React Native Reanimated**.
 
-<div style="display: flex; justify-content: space-between;">
-  <img src="./assets/readme/1.png" alt="Página inicial" width="25%">
-  <img src="./assets/readme/2.png" alt="In-game" width="25%"> 
-</div>
+<table>
+  <tr>
+    <td align="center" style="padding: 10px;">
+      <img src="./assets/readme/1.png" alt="Página inicial" width="300px" />
+    </td>
+    <td align="center" style="padding: 10px;">
+      <img src="./assets/readme/2.png" alt="En juego" width="300px" />
+    </td>
+  </tr>
+</table>
 
 ## Características
 
