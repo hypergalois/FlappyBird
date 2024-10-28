@@ -23,3 +23,4 @@ Este proyecto es una recreación del popular juego **Flappy Bird** utilizando **
 - Mejorar lógica de colisiones
 - Añadir animación al pájaro
 - Añadir audios (música y efectos)
+- Refactor code
