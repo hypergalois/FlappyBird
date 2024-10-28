@@ -157,6 +157,15 @@ const App = () => {
       if (currentY > height - 112 || currentY < 0) {
         runOnJS(setHasGameStarted)(false);
       }
+      // No funciona bien
+      // if (
+      //   birdCenterX.value >= x.value &&
+      //   birdCenterX.value <= x.value + pipeWidth &&
+      //   birdCenterY.value >= pipeOffset &&
+      //   birdCenterY.value <= pipeOffset + pipeHeight
+      // ) {
+      //   runOnJS(setHasGameStarted)(false);
+      // }
     }
   );
 
