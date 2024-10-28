@@ -242,7 +242,7 @@ const App = () => {
                   height={48}
                 />
               </Group>
-              <Circle cy={birdCenterY} cx={birdCenterX} r={30} />
+              {/* <Circle cy={birdCenterY} cx={birdCenterX} r={30} /> */}
             </>
           )}
 
