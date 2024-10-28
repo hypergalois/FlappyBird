@@ -147,6 +147,19 @@ const App = () => {
     yVelocity.value += (GRAVITY * dt) / 1000;
   });
 
+  // Collision detection
+  useAnimatedReaction(
+    () => {
+      return y.value;
+    },
+    (currentY, previousY) => {
+      // Ground
+      if (currentY > height - 112 || currentY < 0) {
+        runOnJS(setHasGameStarted)(false);
+      }
+    }
+  );
+
   const gesture = Gesture.Tap().onStart(() => {
     yVelocity.value = -VELOCITY;
   });
@@ -195,8 +208,6 @@ const App = () => {
                 width={pipeWidth}
                 height={pipeHeight}
               />
-
-              <Rect x={0} y={0} width={256} height={256} color={"red"} />
             </>
           )}
 
